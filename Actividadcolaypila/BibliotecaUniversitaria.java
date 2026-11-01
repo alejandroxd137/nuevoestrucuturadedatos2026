@@ -27,7 +27,8 @@ public class BibliotecaUniversitaria {
     static String[] secciones = {
         "Literatura", "Ciencia", "Historia"
     };
-    static LinkedList<Libro>[] matriz = new LinkedList[3];
+    @SuppressWarnings("unchecked")
+    static LinkedList<Libro>[] matriz = (LinkedList<Libro>[]) new LinkedList[3];
 
     // 3. Cola de prestamos
     static Queue<String> cola = new LinkedList<>();
