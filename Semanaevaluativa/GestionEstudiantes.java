@@ -1,3 +1,5 @@
+package Semanaevaluativa;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -6,7 +8,7 @@ public class GestionEstudiantes {
 
     // HashMap para almacenar estudiantes usando su ID como clave
     private Map<String, Estudiante> mapaEstudiantes;
-    
+
     // Pila para almacenar los estudiantes eliminados y poder deshacer la acción
     private Stack<Estudiante> pilaEliminados;
 
@@ -18,8 +20,8 @@ public class GestionEstudiantes {
 
     // 1. Registrar estudiante
     public void registrarEstudiante(Estudiante estudiante) {
-        if (estudiante != null && estudiante.getId() != null) {
-            mapaEstudiantes.put(estudiante.getId(), estudiante);
+        if (estudiante != null && estudiante.getIdentificacion() != null) {
+            mapaEstudiantes.put(estudiante.getIdentificacion(), estudiante);
             System.out.println("Estudiante registrado con éxito: " + estudiante.getNombre());
         } else {
             System.out.println("Error: Datos del estudiante no válidos.");
@@ -28,16 +30,18 @@ public class GestionEstudiantes {
 
     // 2. Buscar estudiante por ID usando el HashMap
     public Estudiante buscarEstudiantePorId(String id) {
-        return mapaEstudiantes.get(id); 
+        return mapaEstudiantes.get(id);
     }
 
-    // 3. Mostrar historial académico completo (notas desde el arreglo del estudiante)
+    // 3. Mostrar historial académico completo (notas desde el arreglo del
+    // estudiante)
     public void mostrarHistorialAcademico(String id) {
         Estudiante est = buscarEstudiantePorId(id);
         if (est != null) {
             System.out.println("Historial Académico de: " + est.getNombre());
-            // Nota: Aquí invocamos al método que recorre el arreglo dentro de tu clase Estudiante
-            est.mostrarNotasPorSemestre(); 
+            // Nota: Aquí invocamos al método que recorre el arreglo dentro de tu clase
+            // Estudiante
+            est.mostrarNotasPorSemestre();
         } else {
             System.out.println("Estudiante con ID " + id + " no encontrado.");
         }
@@ -58,7 +62,7 @@ public class GestionEstudiantes {
     public void deshacerEliminacion() {
         if (!pilaEliminados.isEmpty()) {
             Estudiante recuperado = pilaEliminados.pop(); // Saca el último eliminado
-            mapaEstudiantes.put(recuperado.getId(), recuperado); // Lo vuelve a meter al mapa
+            mapaEstudiantes.put(recuperado.getIdentificacion(), recuperado); // Lo vuelve a meter al mapa
             System.out.println("Eliminación deshecha. Estudiante recuperado: " + recuperado.getNombre());
         } else {
             System.out.println("No hay eliminaciones recientes para deshacer.");
@@ -73,7 +77,10 @@ public class GestionEstudiantes {
         }
         System.out.println("--- Lista de Estudiantes Registrados ---");
         for (Estudiante est : mapaEstudiantes.values()) {
-            System.out.println("ID: " + est.getId() + " | Nombre: " + est.getNombre() + " | Semestre: " + est.getSemestreActual());
+            System.out.println(
+                    "ID: " + est.getIdentificacion() + " | Nombre: " + est.getNombre() + " | Semestre: "
+                            + est.getSemestre());
         }
+
     }
 }
