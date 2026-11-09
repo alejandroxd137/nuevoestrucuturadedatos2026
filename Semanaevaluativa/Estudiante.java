@@ -1,47 +1,49 @@
+
 package Semanaevaluativa;
 
-public class Estudiante extends Persona {
+import java.util.ArrayList;
 
-    // Atributos propios del estudiante
-    private int codigo;
+public class Estudiante extends Persona {
     private String carrera;
     private int semestre;
-    private double promedio;
-    private String estado; 
+    private ListaEnlazada<String> historialMaterias;
 
-    // Constructor
- public Estudiante(String identificacion, String nombre, int edad,
-                  String documento, String correo, int codigo,
-                  String carrera, int semestre, double promedio) {
+    private static class ListaEnlazada<T> {
+        private final ArrayList<T> elementos = new ArrayList<>();
 
-        super(identificacion, nombre, edad, documento, correo); {
+        public void agregar(T elemento) {
+            elementos.add(elemento);
+        }
 
-        this.codigo = codigo;
+        public boolean contiene(T elemento) {
+            return elementos.contains(elemento);
+        }
+    }
+
+    public Estudiante(String id, String nombre, String email,
+                      String carrera, int semestre) {
+        super(id, nombre, email);
         this.carrera = carrera;
         this.semestre = semestre;
-        this.promedio = promedio;
-        this.estado = "Activo" ;  }// Estado inicial del estudiante
+        this.historialMaterias = new ListaEnlazada<>();
     }
 
-  // Método para mostrar información
+    public void agregarMateriaCursada(String codigoMateria) {
+        historialMaterias.agregar(codigoMateria);
+    }
+
+    public boolean yaCursado(String codigoMateria) {
+        return historialMaterias.contiene(codigoMateria);
+    }
+
+    public ListaEnlazada<String> getHistorialMaterias() {
+        return historialMaterias;
+    }
+
     @Override
-    public void mostrarInformacion() {
-        System.out.println("Codigo: " + codigo);
-        System.out.println("Carrera: " + carrera);
-        System.out.println("Semestre: " + semestre);
-        System.out.println("Promedio: " + promedio);
-        System.out.println("Estado: " + estado);
+    public String obtenerInfo() {
+        return "Estudiante: " + getNombre() +
+               " - Carrera: " + carrera +
+               " - Semestre: " + semestre;
     }
-
-    // Aqui se agrega el metodo   
-    public void mostrarNotasPorSemestre() {
-        // Aquí se  debe programar la lógica para mostrar las notas
-        System.out.println("Notas del estudiante por semestre...");
-
-
-    }
-
-    public int getSemestre() {
-        return this.semestre;
-    }
-} 
+}

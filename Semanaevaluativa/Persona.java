@@ -1,39 +1,32 @@
 package Semanaevaluativa;
-
-public class Persona {
-
-    // Atributos
-    private String identificacion;
+public abstract class Persona {
+    // Atributos encapsulados
+    private String id;
     private String nombre;
-    private int edad;
-    private String documento;
-    private String correo;
+    private String email;
 
-    // Constructor
-    public Persona(String identificacion, String nombre, int edad, String documento, String correo) {
-        this.identificacion = identificacion;
+    // Constructor base con los 3 parámetros exactos
+    public Persona(String id, String nombre, String email) {
+        this.id = id;
         this.nombre = nombre;
-        this.edad = edad;
-        this.documento = documento;
-        this.correo = correo;
+        this.email = email;
     }
+      // Encapsulamiento
+    public String getId() { return id; }
+    public String getNombre() { return nombre; }
+    public String getEmail() { return email; }
 
-    // Obtener nombre
-    public String getNombre() {
-        return nombre;
-    }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setEmail(String email) { this.email = email; }
 
-    // Obtener identificacion
-    public String getIdentificacion() {
-        return identificacion;
-    }
+    // Polimorfismo: cada subclase define su propia versión
+    public abstract String obtenerInfo();
 
-    // Mostrar informacion
-    public void mostrarInformacion() {
-        System.out.println("Nombre: " + nombre);
-        System.out.println("Identificacion: " + identificacion);
-        System.out.println("Edad: " + edad);
-        System.out.println("Documento: " + documento);
-        System.out.println("Correo: " + correo);
+    // Sobrecarga de métodos (polimorfismo estático)
+    public String obtenerInfo(boolean incluirEmail) {
+        if (incluirEmail) {
+            return obtenerInfo() + " | Email: " + email;
+        }
+        return obtenerInfo();
     }
 }
