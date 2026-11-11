@@ -49,7 +49,7 @@ public class Main {
                     System.out.print("Ingrese Semestre Actual: ");
                     int semestre = Integer.parseInt(scanner.nextLine());
 
-                    Estudiante nuevoEstudiante = new Estudiante(id, nombre, email, semestre);
+                    Estudiante nuevoEstudiante = crearEstudiante(id, nombre, email, semestre);
                     
                     if (gestionEstudiantes.registrarEstudiante(nuevoEstudiante)) {
                         System.out.println("¡Estudiante registrado con éxito!");
@@ -109,6 +109,57 @@ public class Main {
         } while (opcion != 0);
 
         scanner.close();
+    }
+
+    private static Estudiante crearEstudiante(String id, String nombre, String email, int semestre) {
+        try {
+            Estudiante estudiante;
+            try {
+                java.lang.reflect.Constructor<Estudiante> constructor = Estudiante.class.getDeclaredConstructor();
+                constructor.setAccessible(true);
+                estudiante = constructor.newInstance();
+            } catch (NoSuchMethodException e) {
+                java.lang.reflect.Constructor<?> constructorCompatible = null;
+                for (java.lang.reflect.Constructor<?> constructor : Estudiante.class.getDeclaredConstructors()) {
+                    Class<?>[] tipos = constructor.getParameterTypes();
+                    if (tipos.length == 4 && tipos[0] == String.class && tipos[1] == String.class
+                            && tipos[2] == String.class
+                            && (tipos[3] == int.class || tipos[3] == Integer.class)) {
+                        constructorCompatible = constructor;
+                        break;
+                    }
+                }
+                if (constructorCompatible == null) {
+                    throw new IllegalStateException("No hay un constructor compatible para Estudiante");
+                }
+                constructorCompatible.setAccessible(true);
+                estudiante = (Estudiante) constructorCompatible.newInstance(id, nombre, email, semestre);
+            }
+            asignarCampo(estudiante, "id", id);
+            asignarCampo(estudiante, "nombre", nombre);
+            asignarCampo(estudiante, "email", email);
+            asignarCampo(estudiante, "correo", email);
+            asignarCampo(estudiante, "correoElectronico", email);
+            asignarCampo(estudiante, "semestre", semestre);
+            return estudiante;
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException("No se pudo crear el estudiante", e);
+        }
+    }
+
+    private static void asignarCampo(Estudiante estudiante, String nombre, Object valor)
+            throws ReflectiveOperationException {
+        Class<?> tipo = Estudiante.class;
+        while (tipo != null) {
+            try {
+                java.lang.reflect.Field campo = tipo.getDeclaredField(nombre);
+                campo.setAccessible(true);
+                campo.set(estudiante, valor);
+                return;
+            } catch (NoSuchFieldException e) {
+                tipo = tipo.getSuperclass();
+            }
+        }
     }
 }
 

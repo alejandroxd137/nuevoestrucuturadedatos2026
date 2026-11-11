@@ -18,6 +18,11 @@ public class Profesor extends Persona {
         this.departamento = departamento;
     }
 
+    @Override
+    public String obtenerInfo() {
+        return toString();
+    }
+
     // Polimorfismo por Sobrescritura usando toString() como la clase base Persona
     @Override
     public String toString() {
